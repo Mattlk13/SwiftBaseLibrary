@@ -1,4 +1,4 @@
-﻿public extension NativeString : Streamable {
+﻿public extension NativeString /*: Streamable*/ {
 
 	typealias Index = Int
 
@@ -247,15 +247,15 @@
 	// Subscripts
 	//
 
-	func `prefix`(through: Index) -> NativeString {
+	public func `prefix`(through: Index) -> NativeString {
 		return self[...through] // E119 Cannot use the unary operator "..." on type "extension String.Index"
 	}
 
-	func `prefix`(upTo: Index) -> NativeString {
+	public func `prefix`(upTo: Index) -> NativeString {
 		return self[..<upTo] // E119 Cannot use the unary operator "..<" on type "extension String.Index"
 	}
 
-	func suffix(from: Index) -> NativeString {
+	public func suffix(from: Index) -> NativeString {
 		return self[from...]
 	}
 

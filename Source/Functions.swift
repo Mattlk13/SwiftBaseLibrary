@@ -169,42 +169,77 @@ public func readLine(# stripNewline: Bool = true) -> String {
 }
 
 public func stride(from start: Int, to end: Int, by stride: Int) -> ISequence<Int> {
-	precondition(stride > 0, "'by' must be larger than zero")
 	var i = start
-	while i < end {
-		__yield i;
-		i += stride
+	if stride > 0 {
+		while i < end {
+			__yield i;
+			i += stride
+		}
+	} else if stride < 0 {
+		while i > end {
+			__yield i;
+			i += stride
+		}
 	}
 }
 
-//75284: Silver: can't overload global func on parameter names?
-/*public func stride(from start: Int, through end: Int, by stride: Int) -> ISequence<Int> {
-	precondition(stride > 0, "'by' must be larger than zero")
+public func stride(from start: Int, through end: Int, by stride: Int) -> ISequence<Int> {
 	var i = start
-	while i <= end {
-		__yield i;
-		i += stride
+	if stride > 0 {
+		while i <= end {
+			__yield i;
+			i += stride
+		}
+	} else if stride < 0 {
+		while i >= end {
+			__yield i;
+			i += stride
+		}
 	}
-}*/
+}
 
 public func stride(from start: Double, to end: Double, by stride: Double) -> ISequence<Double> {
-	precondition(stride > 0, "'by' must be larger than zero")
 	var i = start
-	while i < end {
-		__yield i;
-		i += stride
+	if stride > 0 {
+		while i < end {
+			__yield i;
+			i += stride
+		}
+	} else if stride < 0 {
+		while i > end {
+			__yield i;
+			i += stride
+		}
 	}
 }
 
-//75284: Silver: can't overload global func on parameter names?
-/*public func stride(from start: Double, through end: Double, by stride: Double) -> ISequence<Double> {
-	precondition(stride > 0, "'by' must be larger than zero")
+#if !TOFFEE
+public func stride(from start: Double, through end: Double, by stride: Double) -> ISequence<Double> {
 	var i = start
-	while i <= end {
-		__yield i;
-		i += stride
+	if stride > 0 {
+		while i <= end {
+			__yield i;
+			i += stride
+		}
+	} else if stride < 0 {
+		while i >= end {
+			__yield i;
+			i += stride
+		}
 	}
-}*/
+}
+#endif
+
+#if COOPER || TOFFEE
+@inline(always) public func type(of value: Any) -> Class {
+	return typeOf(value)
+}
+#elseif ECHOES || ISLAND
+@inline(always) public func type(of value: Any) -> Type {
+	return typeOf(value)
+}
+#endif
+
 
 #if TOFFEE
 

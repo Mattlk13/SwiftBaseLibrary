@@ -162,18 +162,18 @@ public extension Int32 /*: AbsoluteValuable*/ {
 public extension Int32 /*: Strideable*/ {
 
 	func advancedBy(_ n: Int32) -> Int32 {
-		return self + n;
+		return self + n
 	}
 
 	func distanceTo(_ other: Int32) -> Int32 {
-		return other - self;
+		return other - self
 	}
 
 	public func stride(# through: Int32, by: Int32) -> ISequence<Int32> {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i <= through {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -184,7 +184,7 @@ public extension Int32 /*: Strideable*/ {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i < to {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -242,18 +242,18 @@ public extension Int64 {//: Equatable, Comparable, ForwardIndexType {
 	// Strideable
 
 	func advancedBy(_ n: Int64) -> Int64 {
-		return self + n;
+		return self + n
 	}
 
 	func distanceTo(_ other: Int64) -> Int64 {
-		return other - self;
+		return other - self
 	}
 
 	public func stride(# through: Int64, by: Int64) -> ISequence<Int64> {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i <= through {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -264,7 +264,7 @@ public extension Int64 {//: Equatable, Comparable, ForwardIndexType {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i < to {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -276,18 +276,18 @@ public extension Float {
 	// Strideable
 
 	func advancedBy(_ n: Float) -> Float {
-		return self + n;
+		return self + n
 	}
 
 	func distanceTo(_ other: Float) -> Float {
-		return other - self;
+		return other - self
 	}
 
 	public func stride(# through: Float, by: Float) -> ISequence<Float> {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i <= through {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -298,7 +298,7 @@ public extension Float {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i < to {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -307,21 +307,98 @@ public extension Float {
 
 public extension Double {
 
+	/*init?(_ stringValue: String?) {
+
+		var stringValue = stringValue//?.Trim()
+		if length(stringValue) == 0 {
+			throw Exception("Invalud Double value")
+		}
+
+		if #defined(COOPER) {
+			let DecFormat = java.text.DecimalFormat.getInstance(java.util.Locale.Default) as! java.text.DecimalFormat
+			let Position = java.text.ParsePosition(0)
+			stringValue = stringValue!.Trim().toUpperCase()
+			// E+ is not accepted, just E or E-
+			stringValue = stringValue!.Replace("E+", "E")
+			if #defined(ANDROID) {
+				if stringValue.Length > 1 {
+					let DecimalIndex = stringValue.IndexOf(".")
+					if DecimalIndex = -1 {
+						DecimalIndex = stringValue.Length
+					}
+					stringValue = stringValue[0] + stringValue.Substring(1, DecimalIndex - 1).Replace(",", "") + stringValue.Substring(DecimalIndex)
+				}
+			}
+
+			if stringValue!.StartsWith("+") {
+				stringValue = stringValue!.Substring(1)
+			}
+			let result = DecFormat.parse(stringValue, Position)?.doubleValue()
+			if Position.Index < stringValue!.Length() {
+				throw Exception("Invalud Double value")
+			}
+			if Double.isInfinite(result) || Double.isNaN(result) {
+				throw Exception("Invalud Double value")
+			}
+			return result
+		} else if #defined(TOFFEE) {
+			let Number = TryParseNumber(stringValue, Foundation.NSLocale.systemLocale)
+			if Number == nil {
+				throw Exception("Invalud Double value")
+			}
+			return Number?.doubleValue
+		} else if #defined(ECHOES) {
+			let result: Double
+			if !Double.TryParse(stringValue, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, &result) {
+				throw Exception("Invalud Double value")
+			}
+			return valueOrDefault(result)
+		} else if #defined(ISLAND) {
+			let result: Double
+			if !Double.TryParse(stringValue, RemObjects.Elements.System.Locale.Invariant, &result) {
+				throw Exception("Invalud Double value")
+			}
+			return valueOrDefault(result)
+		}
+	}*/
+
+	#if TOFFEE
+	private static func TryParseNumber(_ stringValue: String?, _ aLocale: Foundation.NSLocale? = nil) -> NSNumber? {
+
+		var stringValue = stringValue//?.Trim()
+		if length(stringValue) == 0 {
+			return nil
+		}
+
+		let Formatter = NSNumberFormatter()
+		Formatter.numberStyle = NSNumberFormatterStyle.NSNumberFormatterDecimalStyle
+		Formatter.locale = aLocale
+		if (stringValue as! NSString).rangeOfCharacterFromSet(NSCharacterSet.whitespaceAndNewlineCharacterSet).location != NSNotFound {
+			return nil
+		}
+		if stringValue!.hasPrefix("+") && !stringValue!.contains("-") {
+			stringValue = stringValue!.substring(fromIndex: 1)
+			return Formatter.numberFromString(stringValue)
+		}
+		return nil
+	}
+	#endif
+
 	// Strideable
 
 	func advancedBy(_ n: Double) -> Double {
-		return self + n;
+		return self + n
 	}
 
 	func distanceTo(_ other: Double) -> Double {
-		return other - self;
+		return other - self
 	}
 
 	public func stride(# through: Double, by: Double) -> ISequence<Double> {
 		precondition(by > 0, "'by' must be larger than zero")
-		var i = self
+		let i = self
 		while i <= through {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
@@ -332,7 +409,7 @@ public extension Double {
 		precondition(by > 0, "'by' must be larger than zero")
 		var i = self
 		while i < to {
-			__yield i;
+			__yield i
 			i += by
 		}
 	}
